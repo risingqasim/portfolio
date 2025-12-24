@@ -15,6 +15,11 @@ const navbar = document.getElementById('navbar');
 const navLinks = document.querySelectorAll('.nav-link');
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.querySelector('.nav-menu');
+const menuToggle = document.getElementById('menuToggle');
+const menuDropdown = document.getElementById('menuDropdown');
+const bookMeetingBtn = document.getElementById('bookMeetingBtn');
+const menuLinks = document.querySelectorAll('.menu-link');
+const menuBtnBook = document.querySelector('.menu-btn-book');
 
 // Navbar scroll effect
 window.addEventListener('scroll', () => {
@@ -48,11 +53,70 @@ function activateNavLink() {
 
 window.addEventListener('scroll', activateNavLink);
 
+// Menu dropdown toggle
+if (menuToggle && menuDropdown) {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+            menuDropdown.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
+    });
+
+    // Close menu when clicking on menu links
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuDropdown.classList.remove('active');
+            menuToggle.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking on menu book button
+    if (menuBtnBook) {
+        menuBtnBook.addEventListener('click', (e) => {
+            e.preventDefault();
+            menuDropdown.classList.remove('active');
+            menuToggle.classList.remove('active');
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                const offsetTop = contactSection.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+}
+
+// Book meeting button - scroll to contact section
+if (bookMeetingBtn) {
+    bookMeetingBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const contactSection = document.querySelector('#contact');
+        if (contactSection) {
+            const offsetTop = contactSection.offsetTop - 80;
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    });
+}
+
 // Mobile menu toggle
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
+if (hamburger) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+}
 
 // Close mobile menu when clicking a link
 navLinks.forEach(link => {
@@ -560,6 +624,36 @@ if (contactForm) {
         initCircularText();
     }
 })();
+
+// ============================================
+// Scroll to Top Button
+// ============================================
+const scrollToTopBtn = document.getElementById('scrollToTop');
+
+// Show/hide button based on scroll position
+function toggleScrollToTop() {
+    if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add('show');
+    } else {
+        scrollToTopBtn.classList.remove('show');
+    }
+}
+
+// Smooth scroll to top
+if (scrollToTopBtn) {
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Show/hide on scroll
+    window.addEventListener('scroll', toggleScrollToTop);
+    
+    // Initial check
+    toggleScrollToTop();
+}
 
 // ============================================
 // Console Message (Developer Easter Egg)

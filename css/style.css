@@ -99,10 +99,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar .container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     padding: 1rem 20px;
+    gap: 1rem;
 }
 
 .nav-brand {
@@ -112,6 +113,241 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    justify-self: start;
+}
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    justify-self: end;
+}
+
+.btn-book-meeting {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 10px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    background: transparent;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-book-meeting .arrow-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.btn-book-meeting .arrow-icon::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 3.5px solid rgba(20, 27, 45, 0.9);
+    border-bottom: 3.5px solid rgba(20, 27, 45, 0.9);
+    border-top: 2px solid transparent;
+    border-right: 2px solid transparent;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -2.5px;
+    margin-left: -2.5px;
+}
+
+.btn-book-meeting:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-book-meeting:hover .arrow-icon {
+    transform: rotate(45deg);
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    background: transparent;
+    border: none;
+}
+
+.menu-text {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+.menu-toggle:hover .menu-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    padding: 5px;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.menu-icon span {
+    background: rgba(20, 27, 45, 0.85);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover .menu-icon {
+    transform: scale(1.05);
+}
+
+.menu-toggle.active .menu-icon {
+    transform: rotate(90deg);
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.menu-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.menu-link {
+    color: rgba(20, 27, 45, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: var(--transition-fast);
+    padding: 0.75rem 0;
+    position: relative;
+    letter-spacing: 0.3px;
+}
+
+.menu-link:hover {
+    color: var(--accent-primary);
+    padding-left: 8px;
+}
+
+.menu-btn-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 14px 28px;
+    background: rgba(20, 27, 45, 0.95);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    transition: var(--transition-normal);
+    margin-top: 0.5rem;
+    border: none;
+}
+
+.menu-btn-book .arrow-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-normal);
+    position: relative;
+}
+
+.menu-btn-book .arrow-icon::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 3.5px solid rgba(20, 27, 45, 0.9);
+    border-bottom: 3.5px solid rgba(20, 27, 45, 0.9);
+    border-top: 2px solid transparent;
+    border-right: 2px solid transparent;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -2.5px;
+    margin-left: -2.5px;
+}
+
+.menu-btn-book:hover {
+    background: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.menu-btn-book:hover .arrow-icon {
+    transform: rotate(45deg);
+    background: var(--text-primary);
+}
+
+.menu-btn-book:hover .arrow-icon::before {
+    border-left-color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
 }
 
 .nav-menu {
@@ -1580,6 +1816,58 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   Scroll to Top Button
+   ============================================ */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: var(--text-primary);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4),
+                0 0 20px rgba(99, 102, 241, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.8);
+    z-index: 999;
+}
+
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5),
+                0 0 30px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+}
+
+.scroll-to-top:active {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.scroll-to-top i {
+    transition: transform 0.3s ease;
+}
+
+.scroll-to-top:hover i {
+    transform: translateY(-2px);
+}
+
+/* ============================================
    Animations
    ============================================ */
 @keyframes fadeInUp {
@@ -1593,10 +1881,64 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+
 /* ============================================
    Responsive Design
    ============================================ */
 @media (max-width: 768px) {
+    .navbar .container {
+        grid-template-columns: 1fr auto;
+        justify-content: space-between;
+    }
+
+    .nav-center {
+        display: none;
+    }
+
+    .nav-right {
+        gap: 1rem;
+        justify-self: end;
+    }
+
+    .nav-brand {
+        justify-self: start;
+    }
+
+    .btn-book-meeting {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
+    .btn-book-meeting span {
+        display: none;
+    }
+
+    .btn-book-meeting .arrow-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .menu-toggle {
+        padding: 8px 10px;
+    }
+
+    .menu-text {
+        display: none;
+    }
+
+    .menu-icon {
+        width: 24px;
+        height: 24px;
+        gap: 4px;
+        padding: 5px;
+    }
+
+    .menu-dropdown {
+        right: -10px;
+        min-width: 220px;
+        padding: 1.5rem;
+    }
+
     .hamburger {
         display: flex;
     }
@@ -1822,6 +2164,14 @@ h1, h2, h3, h4, h5, h6 {
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .scroll-to-top {
+        width: 45px;
+        height: 45px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.1rem;
     }
 
     .btn {
