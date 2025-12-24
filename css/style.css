@@ -1273,25 +1273,28 @@ h1, h2, h3, h4, h5, h6 {
 
 .contact-logo {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.logo-circle {
+/* Circular Text Container - Main wrapper for the rotating text */
+.circular-text-container {
     width: 200px;
     height: 200px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    animation: rotateLogo 20s linear infinite;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: radial-gradient(circle at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
     box-shadow: 0 0 30px rgba(99, 102, 241, 0.2),
                 inset 0 0 30px rgba(99, 102, 241, 0.1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo-circle::before {
+/* Gradient border effect on hover */
+.circular-text-container::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -1304,22 +1307,14 @@ h1, h2, h3, h4, h5, h6 {
     animation: gradientRotate 3s ease infinite;
     z-index: -1;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.6s ease;
 }
 
-.contact-logo:hover .logo-circle::before {
+.contact-logo:hover .circular-text-container::before {
     opacity: 1;
 }
 
-@keyframes rotateLogo {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
+/* Gradient rotation animation for border */
 @keyframes gradientRotate {
     0%, 100% {
         background-position: 0% 50%;
@@ -1329,98 +1324,84 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-.contact-logo:hover .logo-circle {
-    animation-duration: 8s;
-    border-color: rgba(99, 102, 241, 0.6);
+/* Hover effect on container */
+.contact-logo:hover .circular-text-container {
     box-shadow: 0 0 50px rgba(99, 102, 241, 0.4),
                 inset 0 0 40px rgba(99, 102, 241, 0.2),
                 0 0 80px rgba(139, 92, 246, 0.3);
     transform: scale(1.05);
 }
 
-.logo-text-top {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    background: linear-gradient(135deg, var(--text-primary) 0%, rgba(99, 102, 241, 0.8) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    white-space: nowrap;
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-    transition: all 0.4s ease;
+/* Circular text wrapper - rotates to create the circular effect */
+.circular-text {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    animation: rotateCircularText 20s linear infinite;
+    transition: animation-duration 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo-text-bottom {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, var(--text-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    white-space: nowrap;
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-    transition: all 0.4s ease;
+/* Fast rotation when Skills section is active or hovered */
+.circular-text.fast-rotation {
+    animation-duration: 6s;
 }
 
-.contact-logo:hover .logo-text-top,
-.contact-logo:hover .logo-text-bottom {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 30px rgba(99, 102, 241, 0.8);
-    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.6));
-}
-
-.logo-dot {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: var(--text-primary);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-    transition: all 0.4s ease;
-    animation: pulseDot 2s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
+/* Circular text rotation animation */
+@keyframes rotateCircularText {
+    from {
+        transform: rotate(0deg);
     }
-    50% {
-        opacity: 0.7;
-        transform: scale(1.2);
+    to {
+        transform: rotate(360deg);
     }
 }
 
-.contact-logo:hover .logo-dot {
-    background: var(--accent-primary);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.8),
-                0 0 40px rgba(99, 102, 241, 0.4);
-    animation: pulseDot 1s ease-in-out infinite;
+/* Individual letter styling - positioned around the circle */
+.circular-text span {
+    position: absolute;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, rgba(99, 102, 241, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    transition: all 0.3s ease;
+    transform-origin: center;
+    /* Each letter will have its rotation angle set by JavaScript */
 }
 
-.logo-dot.dot-1 {
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+/* Enhanced letter styling on hover - text becomes white */
+.contact-logo:hover .circular-text span {
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                 0 0 40px rgba(255, 255, 255, 0.4);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
 }
 
-.logo-dot.dot-2 {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+/* Dot separator styling - makes it clear there's a space between words */
+.circular-text span.circular-separator {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    color: var(--accent-primary);
+    font-weight: 900;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+}
+
+/* Enhanced separator on hover - dot becomes white */
+.contact-logo:hover .circular-text span.circular-separator {
+    opacity: 1;
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+    background: none;
 }
 
 .contact-form {
@@ -1796,14 +1777,18 @@ h1, h2, h3, h4, h5, h6 {
         align-self: center;
     }
 
-    .logo-circle {
+    .circular-text-container {
         width: 150px;
         height: 150px;
     }
 
-    .logo-text-top,
-    .logo-text-bottom {
-        font-size: 0.65rem;
+    .circular-text span {
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .circular-text span.circular-separator {
+        font-size: 0.6rem;
     }
 
     .form-row {

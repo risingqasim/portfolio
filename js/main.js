@@ -81,22 +81,57 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================
-// Typing Animation for Hero Title
+// Auto-Changing Typing Animation for Hero Title
 // ============================================
 const typingText = document.querySelector('.typing-text');
 if (typingText) {
-    const text = typingText.textContent;
-    typingText.textContent = '';
-    let index = 0;
-
+    // Array of texts to cycle through
+    const texts = [
+        'Full-Stack .NET Developer',
+        'scalable web applications',
+        'ASP.NET Core',
+        'Modern Frameworks'
+    ];
+    
+    let currentTextIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100; // Typing speed in milliseconds
+    let deletingSpeed = 50; // Deleting speed (faster)
+    let pauseTime = 2000; // Pause time after completing a text (in milliseconds)
+    
     function typeWriter() {
-        if (index < text.length) {
-            typingText.textContent += text.charAt(index);
-            index++;
-            setTimeout(typeWriter, 100);
+        const currentText = texts[currentTextIndex];
+        
+        if (!isDeleting) {
+            // Typing phase
+            if (currentCharIndex < currentText.length) {
+                typingText.textContent = currentText.substring(0, currentCharIndex + 1);
+                currentCharIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // Finished typing, wait before deleting
+                isDeleting = true;
+                setTimeout(typeWriter, pauseTime);
+            }
+        } else {
+            // Deleting phase
+            if (currentCharIndex > 0) {
+                typingText.textContent = currentText.substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+                setTimeout(typeWriter, deletingSpeed);
+            } else {
+                // Finished deleting, move to next text
+                isDeleting = false;
+                currentTextIndex = (currentTextIndex + 1) % texts.length;
+                setTimeout(typeWriter, 300); // Small pause before typing next text
+            }
         }
     }
-
+    
+    // Initialize with empty text
+    typingText.textContent = '';
+    
     // Start typing animation after a short delay
     setTimeout(() => {
         typeWriter();
@@ -313,6 +348,185 @@ if (contactForm) {
         }, 3000);
     });
 }
+
+// ============================================
+// Circular Rotating Text Animation
+// ============================================
+(function() {
+    // Wait for DOM to be fully loaded before initializing
+    function initCircularText() {
+        // Get the circular text container
+        const circularTextContainer = document.getElementById('circularTextContainer');
+        const circularText = document.getElementById('circularText');
+        
+        if (!circularTextContainer || !circularText) {
+            return; // Exit if elements don't exist
+        }
+        
+        if (!circularTextContainer || !circularText) {
+            return; // Exit if elements don't exist
+        }
+        
+        // Name to display in circular format
+        const name = 'Muhammad Qasim';
+        const letters = name.split('');
+        
+        // Replace spaces with dot separator and add dot after last word
+        // Count letters and dots (but not original spaces) for angle calculation
+        const items = []; // Will contain letters and dots
+        letters.forEach((letter, index) => {
+            if (letter === ' ') {
+                // Add a dot separator where space occurs
+                items.push('•'); // Middle dot character
+            } else {
+                items.push(letter);
+            }
+        });
+        // Add dot after the last word (after "Qasim")
+        items.push('•');
+        
+        // Initialize container size - get actual size or use default
+        // Use requestAnimationFrame to ensure layout is calculated
+        let containerSize = 200; // Default base size (matches CSS)
+        const computedStyle = window.getComputedStyle(circularTextContainer);
+        const width = parseFloat(computedStyle.width);
+        if (!isNaN(width) && width > 0) {
+            containerSize = width;
+        } else if (circularTextContainer.offsetWidth > 0) {
+            containerSize = circularTextContainer.offsetWidth;
+        }
+        
+        const radius = containerSize / 2 - (containerSize * 0.12); // 12% padding for better spacing
+        
+        // Calculate angle increment for each item (letters + dots)
+        const angleIncrement = 360 / items.length;
+        
+        // Create span elements for each letter/dot and position them in a circle
+        items.forEach((item, index) => {
+            // Create span element for the letter or dot
+            const span = document.createElement('span');
+            span.textContent = item;
+            span.style.position = 'absolute';
+            span.style.whiteSpace = 'nowrap';
+            
+            // Add special class for dots to style them differently
+            if (item === '•') {
+                span.classList.add('circular-separator');
+            }
+            
+            // Calculate angle for this item (start from top, go clockwise)
+            // Adjust starting angle to position first letter at top (-90 degrees)
+            const angleRad = (angleIncrement * index - 90) * (Math.PI / 180); // Convert to radians
+            const angleDeg = angleIncrement * index - 90; // Angle in degrees
+            
+            // Calculate x and y positions relative to container center
+            // Position at the radius distance from center
+            const x = containerSize / 2 + radius * Math.cos(angleRad);
+            const y = containerSize / 2 + radius * Math.sin(angleRad);
+            
+            // Set absolute position - center of the letter/dot will be at this point
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.transformOrigin = 'center center';
+            
+            // Rotate each letter/dot to be tangent to the circle (base faces inward toward center)
+            // Add 90 degrees to make letter perpendicular to radius (tangent to circle)
+            const rotationAngle = angleDeg + 90;
+            span.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
+            
+            // Add letter/dot to the circular text container
+            circularText.appendChild(span);
+        });
+        
+        // Rotation speed control
+        let isFastRotation = false;
+        const skillsSection = document.getElementById('skills');
+        const circularTextElement = circularText;
+        
+        /**
+         * Update rotation speed based on Skills section visibility/hover
+         */
+        function updateRotationSpeed() {
+            // Check if Skills section is in viewport or hovered
+            if (skillsSection) {
+                const rect = skillsSection.getBoundingClientRect();
+                const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                // Also check if hovering over skills section
+                const isHovered = skillsSection.matches(':hover');
+                
+                if ((isInViewport || isHovered) && !isFastRotation) {
+                    // Enable fast rotation
+                    isFastRotation = true;
+                    circularTextElement.classList.add('fast-rotation');
+                } else if (!isInViewport && !isHovered && isFastRotation) {
+                    // Return to normal rotation
+                    isFastRotation = false;
+                    circularTextElement.classList.remove('fast-rotation');
+                }
+            }
+        }
+        
+        // Listen for scroll events to check Skills section visibility
+        window.addEventListener('scroll', updateRotationSpeed, { passive: true });
+        
+        // Listen for mouse enter/leave on Skills section
+        if (skillsSection) {
+            skillsSection.addEventListener('mouseenter', () => {
+                isFastRotation = true;
+                circularTextElement.classList.add('fast-rotation');
+            });
+            
+            skillsSection.addEventListener('mouseleave', () => {
+                // Only remove fast rotation if Skills section is not in viewport
+                const rect = skillsSection.getBoundingClientRect();
+                const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                if (!isInViewport) {
+                    isFastRotation = false;
+                    circularTextElement.classList.remove('fast-rotation');
+                }
+            });
+        }
+        
+        // Initial check
+        updateRotationSpeed();
+        
+        // Handle responsive resize - recalculate positions if container size changes
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Get current container size
+                const currentSize = circularTextContainer.offsetWidth || 200;
+                const currentRadius = currentSize / 2 - (currentSize * 0.12); // 12% padding
+                
+                // Update letter positions
+                const spans = circularText.querySelectorAll('span');
+                spans.forEach((span, index) => {
+                    const angleRad = (angleIncrement * index - 90) * (Math.PI / 180);
+                    const angleDeg = angleIncrement * index - 90;
+                    const x = currentSize / 2 + currentRadius * Math.cos(angleRad);
+                    const y = currentSize / 2 + currentRadius * Math.sin(angleRad);
+                    
+                    span.style.left = x + 'px';
+                    span.style.top = y + 'px';
+                    
+                    // Update rotation to be tangent to circle
+                    const rotationAngle = angleDeg + 90;
+                    span.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
+                });
+            }, 250);
+        }, { passive: true });
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCircularText);
+    } else {
+        // DOM is already ready, initialize immediately
+        initCircularText();
+    }
+})();
 
 // ============================================
 // Console Message (Developer Easter Egg)
