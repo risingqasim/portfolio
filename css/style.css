@@ -1094,6 +1094,16 @@ h1, h2, h3, h4, h5, h6 {
 .skills {
     padding: var(--section-padding);
     background: var(--bg-primary);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.skills .container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .skills-grid {
@@ -1104,7 +1114,9 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100%;
     box-sizing: border-box;
     align-items: stretch;
-    justify-items: center;
+    justify-items: stretch;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .skill-card {
@@ -1118,6 +1130,7 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1126,6 +1139,7 @@ h1, h2, h3, h4, h5, h6 {
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+    margin: 0 auto;
 }
 
 .skill-card:hover {
@@ -2098,6 +2112,8 @@ h1, h2, h3, h4, h5, h6 {
 
     .skills-grid {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        justify-items: stretch;
+        align-items: stretch;
     }
 
     .contact-wrapper {
@@ -2408,18 +2424,22 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 100% !important;
         box-sizing: border-box !important;
         align-items: stretch !important;
-        justify-items: center !important;
+        justify-items: stretch !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
 
     .skill-card {
         padding: 1.75rem 1.5rem !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
+        margin: 0 auto !important;
     }
 
     .skill-icon {
@@ -2836,18 +2856,22 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 100% !important;
         box-sizing: border-box !important;
         align-items: stretch !important;
-        justify-items: center !important;
+        justify-items: stretch !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
 
     .skill-card {
         padding: 1.5rem 1.25rem !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
+        margin: 0 auto !important;
     }
 
     .skill-icon {
@@ -3019,17 +3043,21 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 100% !important;
         box-sizing: border-box !important;
         align-items: stretch !important;
-        justify-items: center !important;
+        justify-items: stretch !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
 
     .skill-card {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
+        margin: 0 auto !important;
     }
 
     .about-wrapper {
