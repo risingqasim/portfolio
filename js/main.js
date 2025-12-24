@@ -1,12 +1,26 @@
 // ============================================
 // Initialize AOS (Animate On Scroll)
 // ============================================
-AOS.init({
-    duration: 1000,
-    easing: 'ease-in-out',
-    once: true,
-    offset: 100
-});
+// Wait for DOM to be ready before initializing AOS
+function initAOS() {
+    // Optimize AOS for mobile devices
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    AOS.init({
+        duration: isMobile ? 600 : 1000, // Faster animations on mobile
+        easing: 'ease-in-out',
+        once: true,
+        offset: isMobile ? 50 : 100, // Smaller offset on mobile
+        disable: false, // Keep enabled
+        startEvent: 'DOMContentLoaded'
+    });
+}
+
+// Initialize AOS when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAOS);
+} else {
+    initAOS();
+}
 
 // ============================================
 // Navigation
@@ -21,14 +35,30 @@ const bookMeetingBtn = document.getElementById('bookMeetingBtn');
 const menuLinks = document.querySelectorAll('.menu-link');
 const menuBtnBook = document.querySelector('.menu-btn-book');
 
-// Navbar scroll effect
-window.addEventListener('scroll', () => {
+// Throttle function for performance
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+}
+
+// Navbar scroll effect with throttling
+const handleNavbarScroll = throttle(() => {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-});
+}, 100);
+
+window.addEventListener('scroll', handleNavbarScroll, { passive: true });
 
 // Active navigation link on scroll
 const sections = document.querySelectorAll('section[id]');
@@ -51,7 +81,9 @@ function activateNavLink() {
     });
 }
 
-window.addEventListener('scroll', activateNavLink);
+// Throttle activateNavLink for better performance
+const throttledActivateNavLink = throttle(activateNavLink, 150);
+window.addEventListener('scroll', throttledActivateNavLink, { passive: true });
 
 // Menu dropdown toggle
 if (menuToggle && menuDropdown) {
@@ -343,21 +375,26 @@ statNumbers.forEach(stat => {
 });
 
 // ============================================
-// Gradient Orb Animation Enhancement
+// Gradient Orb Animation Enhancement (Desktop only, throttled)
 // ============================================
-const gradientOrbs = document.querySelectorAll('.gradient-orb');
-window.addEventListener('mousemove', (e) => {
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
-    
-    gradientOrbs.forEach((orb, index) => {
-        const speed = (index + 1) * 0.5;
-        const x = (mouseX - 0.5) * 100 * speed;
-        const y = (mouseY - 0.5) * 100 * speed;
+// Only run on desktop to save mobile performance
+if (window.matchMedia('(min-width: 769px)').matches) {
+    const gradientOrbs = document.querySelectorAll('.gradient-orb');
+    const throttledMouseMove = throttle((e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
         
-        orb.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});
+        gradientOrbs.forEach((orb, index) => {
+            const speed = (index + 1) * 0.5;
+            const x = (mouseX - 0.5) * 100 * speed;
+            const y = (mouseY - 0.5) * 100 * speed;
+            
+            orb.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    }, 50);
+    
+    window.addEventListener('mousemove', throttledMouseMove, { passive: true });
+}
 
 // ============================================
 // Cursor Effect (Optional Enhancement)
@@ -377,14 +414,16 @@ cursor.style.cssText = `
 `;
 document.body.appendChild(cursor);
 
-// Show cursor on desktop only
+// Show cursor on desktop only with throttled movement
 if (window.matchMedia('(min-width: 769px)').matches) {
     cursor.style.display = 'block';
     
-    document.addEventListener('mousemove', (e) => {
+    const throttledCursorMove = throttle((e) => {
         cursor.style.left = e.clientX - 10 + 'px';
         cursor.style.top = e.clientY - 10 + 'px';
-    });
+    }, 16); // ~60fps
+    
+    document.addEventListener('mousemove', throttledCursorMove, { passive: true });
     
     // Cursor hover effects
     document.querySelectorAll('a, button, .skill-card, .project-card').forEach(el => {
@@ -564,8 +603,9 @@ if (contactForm) {
             }
         }
         
-        // Listen for scroll events to check Skills section visibility
-        window.addEventListener('scroll', updateRotationSpeed, { passive: true });
+        // Listen for scroll events to check Skills section visibility (throttled)
+        const throttledUpdateRotationSpeed = throttle(updateRotationSpeed, 200);
+        window.addEventListener('scroll', throttledUpdateRotationSpeed, { passive: true });
         
         // Listen for mouse enter/leave on Skills section
         if (skillsSection) {
@@ -648,8 +688,9 @@ if (scrollToTopBtn) {
         });
     });
 
-    // Show/hide on scroll
-    window.addEventListener('scroll', toggleScrollToTop);
+    // Show/hide on scroll (throttled)
+    const throttledToggleScrollToTop = throttle(toggleScrollToTop, 150);
+    window.addEventListener('scroll', throttledToggleScrollToTop, { passive: true });
     
     // Initial check
     toggleScrollToTop();
