@@ -61,12 +61,17 @@ body {
     /* Prevent text size adjustment on iOS */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Ensure proper rendering on GitHub Pages */
+    position: relative;
+    min-height: 100vh;
 }
 
 .container {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* ============================================
@@ -581,6 +586,21 @@ h1, h2, h3, h4, h5, h6 {
     touch-action: manipulation;
 }
 
+/* Ensure Font Awesome icons are always visible on GitHub Pages */
+.btn i,
+.btn .fab,
+.btn .fas {
+    display: inline-block !important;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 .btn-primary {
     background: var(--gradient-1);
     color: var(--text-primary);
@@ -1056,6 +1076,11 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: stretch;
+    justify-items: center;
 }
 
 .skill-card {
@@ -1067,6 +1092,13 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 20px;
     transition: var(--transition-normal);
     cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .skill-card:hover {
@@ -1081,18 +1113,21 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
     color: var(--text-primary);
     transition: var(--transition-normal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     height: 48px;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .skill-icon i {
     font-size: 48px;
     line-height: 1;
     transition: var(--transition-normal);
-    display: inline-block;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 /* Devicon icons styling - ensure proper sizing */
@@ -2139,31 +2174,46 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .hero-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-        padding: 0 10px;
-        max-width: 400px;
-        margin: 0 auto;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+        padding: 0 10px !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     /* Social icons - smaller size, 2 per row */
     .hero-buttons .btn:not(.btn-outline) {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 16px;
-        font-size: 0.85rem;
-        min-height: 40px;
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        font-size: 0 !important;
+        min-height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Ensure icons are visible and properly sized on mobile */
+    .hero-buttons .btn:not(.btn-outline) i {
+        display: inline-block !important;
+        font-size: 1.2rem !important;
+        line-height: 1 !important;
+        margin-right: 0 !important;
+        vertical-align: middle !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     /* Contact Me button - full width below */
     .hero-buttons .btn-outline {
-        grid-column: 1 / -1;
-        width: 100%;
-        justify-content: center;
-        padding: 12px 24px;
-        font-size: 0.9rem;
-        margin-top: 0.25rem;
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 24px !important;
+        font-size: 0.9rem !important;
+        margin-top: 0.25rem !important;
     }
 
     .scroll-indicator {
@@ -2282,12 +2332,24 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .skills-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        align-items: stretch !important;
+        justify-items: center !important;
     }
 
     .skill-card {
-        padding: 1.75rem 1.5rem;
+        padding: 1.75rem 1.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .skill-icon {
@@ -2533,31 +2595,46 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .hero-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.625rem;
-        padding: 0 5px;
-        max-width: 360px;
-        margin: 0 auto;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.625rem !important;
+        padding: 0 5px !important;
+        max-width: 360px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     /* Social icons - even smaller on very small screens */
     .hero-buttons .btn:not(.btn-outline) {
-        width: 100%;
-        justify-content: center;
-        padding: 9px 14px;
-        font-size: 0.8rem;
-        min-height: 38px;
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 9px 14px !important;
+        font-size: 0 !important;
+        min-height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Ensure icons are visible and properly sized on very small screens */
+    .hero-buttons .btn:not(.btn-outline) i {
+        display: inline-block !important;
+        font-size: 1.1rem !important;
+        line-height: 1 !important;
+        margin-right: 0 !important;
+        vertical-align: middle !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     /* Contact Me button - full width below */
     .hero-buttons .btn-outline {
-        grid-column: 1 / -1;
-        width: 100%;
-        justify-content: center;
-        padding: 11px 20px;
-        font-size: 0.85rem;
-        margin-top: 0.25rem;
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 11px 20px !important;
+        font-size: 0.85rem !important;
+        margin-top: 0.25rem !important;
     }
 
     /* Section Titles */
@@ -2638,12 +2715,24 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        align-items: stretch !important;
+        justify-items: center !important;
     }
 
     .skill-card {
-        padding: 1.5rem 1.25rem;
+        padding: 1.5rem 1.25rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .skill-icon {
@@ -2810,7 +2899,22 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .skills-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        align-items: stretch !important;
+        justify-items: center !important;
+    }
+
+    .skill-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .about-wrapper {
