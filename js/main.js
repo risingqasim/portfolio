@@ -140,19 +140,38 @@ skillCards.forEach(card => {
 });
 
 // ============================================
-// Project Cards Parallax Effect
+// Project Cards Enhanced Animations
 // ============================================
 const projectCards = document.querySelectorAll('.project-card');
-window.addEventListener('scroll', () => {
-    projectCards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-            const scrollProgress = (window.innerHeight - rect.top) / window.innerHeight;
-            const parallaxValue = scrollProgress * 20;
-            card.style.transform = `translateY(${parallaxValue}px)`;
+
+// Intersection Observer for project cards
+const projectObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
+            projectObserver.unobserve(entry.target);
         }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+projectCards.forEach(card => {
+    projectObserver.observe(card);
+});
+
+// Enhanced hover effects with glow
+projectCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
     });
 });
 
@@ -257,9 +276,43 @@ window.addEventListener('load', () => {
 });
 
 // ============================================
-// Form Handling (if contact form is added later)
+// Contact Form Handling
 // ============================================
-// This can be expanded if a contact form is added
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            description: document.getElementById('description').value
+        };
+        
+        // Create mailto link with form data
+        const subject = encodeURIComponent(`Contact from ${formData.name}`);
+        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.description}`);
+        const mailtoLink = `mailto:qasimmughal7244@gmail.com?subject=${subject}&body=${body}`;
+        
+        // Open email client
+        window.location.href = mailtoLink;
+        
+        // Show success message (optional)
+        const submitBtn = contactForm.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>MESSAGE SENT!</span><i class="fas fa-check"></i>';
+        submitBtn.style.borderColor = 'rgba(34, 197, 94, 0.5)';
+        
+        // Reset form
+        contactForm.reset();
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+        }, 3000);
+    });
+}
 
 // ============================================
 // Console Message (Developer Easter Egg)
