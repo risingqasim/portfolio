@@ -268,17 +268,32 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .typing-text {
-    border-right: 2px solid var(--accent-primary);
+    --cursor-color: var(--accent-primary);
+    border-right: 2px solid var(--cursor-color);
     padding-right: 5px;
-    animation: blink 1s infinite;
+    /* Gradient text support with smooth transitions */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    position: relative;
+    /* Smooth cursor animation - only border blinks, text stays visible */
+    animation: smoothCursorBlink 1s ease-in-out infinite;
 }
 
-@keyframes blink {
-    0%, 50% {
-        border-color: var(--accent-primary);
+/* Smooth cursor blink - text remains visible, only border opacity changes */
+@keyframes smoothCursorBlink {
+    0%, 45% {
+        border-right-color: var(--cursor-color);
     }
-    51%, 100% {
-        border-color: transparent;
+    50%, 95% {
+        border-right-color: transparent;
+    }
+    100% {
+        border-right-color: var(--cursor-color);
     }
 }
 

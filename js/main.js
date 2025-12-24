@@ -93,6 +93,22 @@ if (typingText) {
         'Modern Frameworks'
     ];
     
+    // Attractive color gradients for each text (matching portfolio theme)
+    const textColors = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', // Purple gradient for .NET Developer
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', // Pink-red gradient for scalable apps
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', // Blue gradient for ASP.NET Core
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'  // Green-teal gradient for Modern Frameworks
+    ];
+    
+    // Cursor colors matching each text color (solid colors from gradients)
+    const cursorColors = [
+        '#667eea', // Purple for .NET Developer
+        '#f093fb', // Pink for scalable apps
+        '#4facfe', // Blue for ASP.NET Core
+        '#43e97b'  // Green for Modern Frameworks
+    ];
+    
     let currentTextIndex = 0;
     let currentCharIndex = 0;
     let isDeleting = false;
@@ -100,12 +116,29 @@ if (typingText) {
     let deletingSpeed = 50; // Deleting speed (faster)
     let pauseTime = 2000; // Pause time after completing a text (in milliseconds)
     
+    // Function to apply color to text and cursor
+    function applyColor(colorIndex) {
+        // Apply gradient to text
+        typingText.style.background = textColors[colorIndex];
+        typingText.style.webkitBackgroundClip = 'text';
+        typingText.style.webkitTextFillColor = 'transparent';
+        typingText.style.backgroundClip = 'text';
+        
+        // Update cursor color to match using CSS variable for smooth animation
+        typingText.style.setProperty('--cursor-color', cursorColors[colorIndex]);
+        typingText.style.borderRightColor = cursorColors[colorIndex];
+    }
+    
     function typeWriter() {
         const currentText = texts[currentTextIndex];
         
         if (!isDeleting) {
             // Typing phase
             if (currentCharIndex < currentText.length) {
+                // Apply color when starting to type new text
+                if (currentCharIndex === 0) {
+                    applyColor(currentTextIndex);
+                }
                 typingText.textContent = currentText.substring(0, currentCharIndex + 1);
                 currentCharIndex++;
                 setTimeout(typeWriter, typingSpeed);
