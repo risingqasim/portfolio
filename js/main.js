@@ -1,705 +1,171 @@
 // ============================================
-// Initialize AOS (Animate On Scroll)
+// Theme Toggle (Dark / Light Mode)
 // ============================================
-// Wait for DOM to be ready before initializing AOS
-function initAOS() {
-    // Optimize AOS for mobile devices
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    AOS.init({
-        duration: isMobile ? 600 : 1000, // Faster animations on mobile
-        easing: 'ease-in-out',
-        once: true,
-        offset: isMobile ? 50 : 100, // Smaller offset on mobile
-        disable: false, // Keep enabled
-        startEvent: 'DOMContentLoaded'
-    });
-}
+(function () {
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+    if (!toggleBtn) return;
 
-// Initialize AOS when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAOS);
-} else {
-    initAOS();
-}
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+
+    if (initial === 'dark') {
+        root.setAttribute('data-theme', 'dark');
+        toggleBtn.textContent = '☀️';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+            root.removeAttribute('data-theme');
+            toggleBtn.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        } else {
+            root.setAttribute('data-theme', 'dark');
+            toggleBtn.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+})();
 
 // ============================================
 // Navigation
 // ============================================
-const navbar = document.getElementById('navbar');
-const navLinks = document.querySelectorAll('.nav-link');
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.querySelector('.nav-menu');
-const menuToggle = document.getElementById('menuToggle');
-const menuDropdown = document.getElementById('menuDropdown');
-const bookMeetingBtn = document.getElementById('bookMeetingBtn');
-const menuLinks = document.querySelectorAll('.menu-link');
-const menuBtnBook = document.querySelector('.menu-btn-book');
+const siteNav = document.getElementById('siteNav');
+const siteHamburger = document.getElementById('siteHamburger');
+const mobmenu = document.getElementById('mobmenu');
+const navLinks = document.querySelectorAll('.navlinks a, .mobmenu a');
 
-// Throttle function for performance
 function throttle(func, limit) {
     let inThrottle;
-    return function() {
+    return function () {
         const args = arguments;
         const context = this;
         if (!inThrottle) {
             func.apply(context, args);
             inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
+            setTimeout(() => (inThrottle = false), limit);
         }
-    }
+    };
 }
 
-// Navbar scroll effect with throttling
-const handleNavbarScroll = throttle(() => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-}, 100);
-
-window.addEventListener('scroll', handleNavbarScroll, { passive: true });
-
-// Active navigation link on scroll
-const sections = document.querySelectorAll('section[id]');
-
-function activateNavLink() {
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute('id');
-        const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            navLinks.forEach(link => link.classList.remove('active'));
-            if (navLink) {
-                navLink.classList.add('active');
-            }
-        }
-    });
-}
-
-// Throttle activateNavLink for better performance
-const throttledActivateNavLink = throttle(activateNavLink, 150);
-window.addEventListener('scroll', throttledActivateNavLink, { passive: true });
-
-// Menu dropdown toggle
-if (menuToggle && menuDropdown) {
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-            menuDropdown.classList.remove('active');
-            menuToggle.classList.remove('active');
-        }
-    });
-
-    // Close menu when clicking on menu links
-    menuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuDropdown.classList.remove('active');
-            menuToggle.classList.remove('active');
-        });
-    });
-
-    // Close menu when clicking on menu book button
-    if (menuBtnBook) {
-        menuBtnBook.addEventListener('click', (e) => {
-            e.preventDefault();
-            menuDropdown.classList.remove('active');
-            menuToggle.classList.remove('active');
-            const contactSection = document.querySelector('#contact');
-            if (contactSection) {
-                const offsetTop = contactSection.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-}
-
-// Book meeting button - scroll to contact section
-if (bookMeetingBtn) {
-    bookMeetingBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const contactSection = document.querySelector('#contact');
-        if (contactSection) {
-            const offsetTop = contactSection.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
+// Navbar scroll shadow
+if (siteNav) {
+    const handleNavScroll = throttle(() => {
+        siteNav.classList.toggle('sc', window.scrollY > 50);
+    }, 100);
+    window.addEventListener('scroll', handleNavScroll, { passive: true });
+    handleNavScroll();
 }
 
 // Mobile menu toggle
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
+if (siteHamburger && mobmenu) {
+    siteHamburger.addEventListener('click', () => {
+        mobmenu.classList.toggle('on');
+    });
+
+    mobmenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+            mobmenu.classList.remove('on');
+        });
     });
 }
 
-// Close mobile menu when clicking a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    });
-});
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id], #contact');
 
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href !== '#') {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                const offsetTop = target.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
-});
+function activateNavLink() {
+    const scrollY = window.pageYOffset + 120;
 
-// ============================================
-// Auto-Changing Typing Animation for Hero Title
-// ============================================
-const typingText = document.querySelector('.typing-text');
-if (typingText) {
-    // Array of texts to cycle through
-    const texts = [
-        'Full-Stack .NET Developer',
-        'scalable web applications',
-        'ASP.NET Core',
-        'Modern Frameworks'
-    ];
-    
-    // Attractive color gradients for each text (matching portfolio theme)
-    const textColors = [
-        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', // Purple gradient for .NET Developer
-        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', // Pink-red gradient for scalable apps
-        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', // Blue gradient for ASP.NET Core
-        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'  // Green-teal gradient for Modern Frameworks
-    ];
-    
-    // Cursor colors matching each text color (solid colors from gradients)
-    const cursorColors = [
-        '#667eea', // Purple for .NET Developer
-        '#f093fb', // Pink for scalable apps
-        '#4facfe', // Blue for ASP.NET Core
-        '#43e97b'  // Green for Modern Frameworks
-    ];
-    
-    let currentTextIndex = 0;
-    let currentCharIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 100; // Typing speed in milliseconds
-    let deletingSpeed = 50; // Deleting speed (faster)
-    let pauseTime = 2000; // Pause time after completing a text (in milliseconds)
-    
-    // Function to apply color to text and cursor
-    function applyColor(colorIndex) {
-        // Apply gradient to text
-        typingText.style.background = textColors[colorIndex];
-        typingText.style.webkitBackgroundClip = 'text';
-        typingText.style.webkitTextFillColor = 'transparent';
-        typingText.style.backgroundClip = 'text';
-        
-        // Update cursor color to match using CSS variable for smooth animation
-        typingText.style.setProperty('--cursor-color', cursorColors[colorIndex]);
-        typingText.style.borderRightColor = cursorColors[colorIndex];
-    }
-    
-    function typeWriter() {
-        const currentText = texts[currentTextIndex];
-        
-        if (!isDeleting) {
-            // Typing phase
-            if (currentCharIndex < currentText.length) {
-                // Apply color when starting to type new text
-                if (currentCharIndex === 0) {
-                    applyColor(currentTextIndex);
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            document.querySelectorAll('.navlinks a').forEach((link) => {
+                link.classList.remove('on');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('on');
                 }
-                typingText.textContent = currentText.substring(0, currentCharIndex + 1);
-                currentCharIndex++;
-                setTimeout(typeWriter, typingSpeed);
-            } else {
-                // Finished typing, wait before deleting
-                isDeleting = true;
-                setTimeout(typeWriter, pauseTime);
-            }
-        } else {
-            // Deleting phase
-            if (currentCharIndex > 0) {
-                typingText.textContent = currentText.substring(0, currentCharIndex - 1);
-                currentCharIndex--;
-                setTimeout(typeWriter, deletingSpeed);
-            } else {
-                // Finished deleting, move to next text
-                isDeleting = false;
-                currentTextIndex = (currentTextIndex + 1) % texts.length;
-                setTimeout(typeWriter, 300); // Small pause before typing next text
-            }
+            });
         }
-    }
-    
-    // Initialize with empty text
-    typingText.textContent = '';
-    
-    // Start typing animation after a short delay
-    setTimeout(() => {
-        typeWriter();
-    }, 500);
-}
-
-// ============================================
-// Intersection Observer for Animations
-// ============================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe elements for custom animations
-document.querySelectorAll('.glass-card, .skill-card, .project-card').forEach(el => {
-    observer.observe(el);
-});
-
-// ============================================
-// Skill Cards Hover Effect
-// ============================================
-const skillCards = document.querySelectorAll('.skill-card');
-skillCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.05)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// ============================================
-// Project Cards Enhanced Animations
-// ============================================
-const projectCards = document.querySelectorAll('.project-card');
-
-// Intersection Observer for project cards
-const projectObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }, index * 100);
-            projectObserver.unobserve(entry.target);
-        }
-    });
-}, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-});
-
-projectCards.forEach(card => {
-    projectObserver.observe(card);
-});
-
-// Enhanced hover effects with glow
-projectCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    });
-});
-
-// ============================================
-// Statistics Counter Animation
-// ============================================
-function animateCounter(element, target, duration = 2000) {
-    let current = 0;
-    const increment = target / (duration / 16);
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target + (element.textContent.includes('+') ? '+' : '');
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : '');
-        }
-    }, 16);
-}
-
-const statNumbers = document.querySelectorAll('.stat-number');
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const text = entry.target.textContent;
-            const number = parseInt(text.replace(/\D/g, ''));
-            if (number && !entry.target.classList.contains('animated')) {
-                entry.target.classList.add('animated');
-                animateCounter(entry.target, number, 2000);
-            }
-        }
-    });
-}, { threshold: 0.5 });
-
-statNumbers.forEach(stat => {
-    statsObserver.observe(stat);
-});
-
-// ============================================
-// Gradient Orb Animation Enhancement (Desktop only, throttled)
-// ============================================
-// Only run on desktop to save mobile performance
-if (window.matchMedia('(min-width: 769px)').matches) {
-    const gradientOrbs = document.querySelectorAll('.gradient-orb');
-    const throttledMouseMove = throttle((e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        gradientOrbs.forEach((orb, index) => {
-            const speed = (index + 1) * 0.5;
-            const x = (mouseX - 0.5) * 100 * speed;
-            const y = (mouseY - 0.5) * 100 * speed;
-            
-            orb.style.transform = `translate(${x}px, ${y}px)`;
-        });
-    }, 50);
-    
-    window.addEventListener('mousemove', throttledMouseMove, { passive: true });
-}
-
-// ============================================
-// Cursor Effect (Optional Enhancement)
-// ============================================
-let cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-cursor.style.cssText = `
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(99, 102, 241, 0.5);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.2s ease;
-    display: none;
-`;
-document.body.appendChild(cursor);
-
-// Show cursor on desktop only with throttled movement
-if (window.matchMedia('(min-width: 769px)').matches) {
-    cursor.style.display = 'block';
-    
-    const throttledCursorMove = throttle((e) => {
-        cursor.style.left = e.clientX - 10 + 'px';
-        cursor.style.top = e.clientY - 10 + 'px';
-    }, 16); // ~60fps
-    
-    document.addEventListener('mousemove', throttledCursorMove, { passive: true });
-    
-    // Cursor hover effects
-    document.querySelectorAll('a, button, .skill-card, .project-card').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.transform = 'scale(1.5)';
-            cursor.style.borderColor = 'rgba(99, 102, 241, 1)';
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            cursor.style.transform = 'scale(1)';
-            cursor.style.borderColor = 'rgba(99, 102, 241, 0.5)';
-        });
     });
 }
 
-// ============================================
-// Loading Animation (Optional)
-// ============================================
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
+window.addEventListener('scroll', throttle(activateNavLink, 150), { passive: true });
 
-// ============================================
-// Contact Form Handling
-// ============================================
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+// Smooth scroll for nav links
+navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
         e.preventDefault();
-        
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            description: document.getElementById('description').value
-        };
-        
-        // Create mailto link with form data
-        const subject = encodeURIComponent(`Contact from ${formData.name}`);
-        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.description}`);
-        const mailtoLink = `mailto:qasimmughal7244@gmail.com?subject=${subject}&body=${body}`;
-        
-        // Open email client
-        window.location.href = mailtoLink;
-        
-        // Show success message (optional)
-        const submitBtn = contactForm.querySelector('.btn-submit');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span>MESSAGE SENT!</span><i class="fas fa-check"></i>';
-        submitBtn.style.borderColor = 'rgba(34, 197, 94, 0.5)';
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-            submitBtn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-        }, 3000);
+        const target = document.querySelector(href);
+        if (target) {
+            const offset = 70;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
     });
-}
+});
 
 // ============================================
-// Circular Rotating Text Animation
+// Scroll Reveal (.rev elements)
 // ============================================
-(function() {
-    // Wait for DOM to be fully loaded before initializing
-    function initCircularText() {
-        // Get the circular text container
-        const circularTextContainer = document.getElementById('circularTextContainer');
-        const circularText = document.getElementById('circularText');
-        
-        if (!circularTextContainer || !circularText) {
-            return; // Exit if elements don't exist
-        }
-        
-        if (!circularTextContainer || !circularText) {
-            return; // Exit if elements don't exist
-        }
-        
-        // Name to display in circular format
-        const name = 'Muhammad Qasim';
-        const letters = name.split('');
-        
-        // Replace spaces with dot separator and add dot after last word
-        // Count letters and dots (but not original spaces) for angle calculation
-        const items = []; // Will contain letters and dots
-        letters.forEach((letter, index) => {
-            if (letter === ' ') {
-                // Add a dot separator where space occurs
-                items.push('•'); // Middle dot character
-            } else {
-                items.push(letter);
-            }
-        });
-        // Add dot after the last word (after "Qasim")
-        items.push('•');
-        
-        // Initialize container size - get actual size or use default
-        // Use requestAnimationFrame to ensure layout is calculated
-        let containerSize = 200; // Default base size (matches CSS)
-        const computedStyle = window.getComputedStyle(circularTextContainer);
-        const width = parseFloat(computedStyle.width);
-        if (!isNaN(width) && width > 0) {
-            containerSize = width;
-        } else if (circularTextContainer.offsetWidth > 0) {
-            containerSize = circularTextContainer.offsetWidth;
-        }
-        
-        const radius = containerSize / 2 - (containerSize * 0.12); // 12% padding for better spacing
-        
-        // Calculate angle increment for each item (letters + dots)
-        const angleIncrement = 360 / items.length;
-        
-        // Create span elements for each letter/dot and position them in a circle
-        items.forEach((item, index) => {
-            // Create span element for the letter or dot
-            const span = document.createElement('span');
-            span.textContent = item;
-            span.style.position = 'absolute';
-            span.style.whiteSpace = 'nowrap';
-            
-            // Add special class for dots to style them differently
-            if (item === '•') {
-                span.classList.add('circular-separator');
-            }
-            
-            // Calculate angle for this item (start from top, go clockwise)
-            // Adjust starting angle to position first letter at top (-90 degrees)
-            const angleRad = (angleIncrement * index - 90) * (Math.PI / 180); // Convert to radians
-            const angleDeg = angleIncrement * index - 90; // Angle in degrees
-            
-            // Calculate x and y positions relative to container center
-            // Position at the radius distance from center
-            const x = containerSize / 2 + radius * Math.cos(angleRad);
-            const y = containerSize / 2 + radius * Math.sin(angleRad);
-            
-            // Set absolute position - center of the letter/dot will be at this point
-            span.style.left = x + 'px';
-            span.style.top = y + 'px';
-            span.style.transformOrigin = 'center center';
-            
-            // Rotate each letter/dot to be tangent to the circle (base faces inward toward center)
-            // Add 90 degrees to make letter perpendicular to radius (tangent to circle)
-            const rotationAngle = angleDeg + 90;
-            span.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
-            
-            // Add letter/dot to the circular text container
-            circularText.appendChild(span);
-        });
-        
-        // Rotation speed control
-        let isFastRotation = false;
-        const skillsSection = document.getElementById('skills');
-        const circularTextElement = circularText;
-        
-        /**
-         * Update rotation speed based on Skills section visibility/hover
-         */
-        function updateRotationSpeed() {
-            // Check if Skills section is in viewport or hovered
-            if (skillsSection) {
-                const rect = skillsSection.getBoundingClientRect();
-                const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-                
-                // Also check if hovering over skills section
-                const isHovered = skillsSection.matches(':hover');
-                
-                if ((isInViewport || isHovered) && !isFastRotation) {
-                    // Enable fast rotation
-                    isFastRotation = true;
-                    circularTextElement.classList.add('fast-rotation');
-                } else if (!isInViewport && !isHovered && isFastRotation) {
-                    // Return to normal rotation
-                    isFastRotation = false;
-                    circularTextElement.classList.remove('fast-rotation');
-                }
-            }
-        }
-        
-        // Listen for scroll events to check Skills section visibility (throttled)
-        const throttledUpdateRotationSpeed = throttle(updateRotationSpeed, 200);
-        window.addEventListener('scroll', throttledUpdateRotationSpeed, { passive: true });
-        
-        // Listen for mouse enter/leave on Skills section
-        if (skillsSection) {
-            skillsSection.addEventListener('mouseenter', () => {
-                isFastRotation = true;
-                circularTextElement.classList.add('fast-rotation');
-            });
-            
-            skillsSection.addEventListener('mouseleave', () => {
-                // Only remove fast rotation if Skills section is not in viewport
-                const rect = skillsSection.getBoundingClientRect();
-                const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-                if (!isInViewport) {
-                    isFastRotation = false;
-                    circularTextElement.classList.remove('fast-rotation');
+const revEls = document.querySelectorAll('.rev');
+
+if (revEls.length && 'IntersectionObserver' in window) {
+    const revObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                    revObserver.unobserve(entry.target);
                 }
             });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    revEls.forEach((el) => revObserver.observe(el));
+} else {
+    revEls.forEach((el) => el.classList.add('in'));
+}
+
+// ============================================
+// Skill Bar Animation
+// ============================================
+const skillBars = document.querySelectorAll('.bar-f');
+
+if (skillBars.length && 'IntersectionObserver' in window) {
+    const barObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const width = bar.getAttribute('data-w') || '0';
+                    bar.style.width = `${width}%`;
+                    barObserver.unobserve(bar);
+                }
+            });
+        },
+        { threshold: 0.3 }
+    );
+
+    skillBars.forEach((bar) => barObserver.observe(bar));
+}
+
+// ============================================
+// Service cards → contact scroll
+// ============================================
+document.querySelectorAll('.svc').forEach((card) => {
+    card.addEventListener('click', () => {
+        const contact = document.getElementById('contact');
+        if (contact) {
+            const top = contact.getBoundingClientRect().top + window.pageYOffset - 70;
+            window.scrollTo({ top, behavior: 'smooth' });
         }
-        
-        // Initial check
-        updateRotationSpeed();
-        
-        // Handle responsive resize - recalculate positions if container size changes
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                // Get current container size
-                const currentSize = circularTextContainer.offsetWidth || 200;
-                const currentRadius = currentSize / 2 - (currentSize * 0.12); // 12% padding
-                
-                // Update letter positions
-                const spans = circularText.querySelectorAll('span');
-                spans.forEach((span, index) => {
-                    const angleRad = (angleIncrement * index - 90) * (Math.PI / 180);
-                    const angleDeg = angleIncrement * index - 90;
-                    const x = currentSize / 2 + currentRadius * Math.cos(angleRad);
-                    const y = currentSize / 2 + currentRadius * Math.sin(angleRad);
-                    
-                    span.style.left = x + 'px';
-                    span.style.top = y + 'px';
-                    
-                    // Update rotation to be tangent to circle
-                    const rotationAngle = angleDeg + 90;
-                    span.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
-                });
-            }, 250);
-        }, { passive: true });
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCircularText);
-    } else {
-        // DOM is already ready, initialize immediately
-        initCircularText();
-    }
-})();
-
-// ============================================
-// Scroll to Top Button
-// ============================================
-const scrollToTopBtn = document.getElementById('scrollToTop');
-
-// Show/hide button based on scroll position
-function toggleScrollToTop() {
-    if (window.scrollY > 300) {
-        scrollToTopBtn.classList.add('show');
-    } else {
-        scrollToTopBtn.classList.remove('show');
-    }
-}
-
-// Smooth scroll to top
-if (scrollToTopBtn) {
-    scrollToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
     });
-
-    // Show/hide on scroll (throttled)
-    const throttledToggleScrollToTop = throttle(toggleScrollToTop, 150);
-    window.addEventListener('scroll', throttledToggleScrollToTop, { passive: true });
-    
-    // Initial check
-    toggleScrollToTop();
-}
-
-// ============================================
-// Console Message (Developer Easter Egg)
-// ============================================
-console.log('%c👋 Hello! Welcome to my portfolio.', 'color: #6366f1; font-size: 16px; font-weight: bold;');
-console.log('%cBuilt with HTML, CSS, and JavaScript', 'color: #8b5cf6; font-size: 12px;');
-console.log('%cLet\'s connect!', 'color: #ec4899; font-size: 12px;');
-
+});
