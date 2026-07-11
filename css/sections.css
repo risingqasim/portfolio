@@ -1132,6 +1132,20 @@
     border-color: var(--blue);
 }
 
+.pub-journal.link-btn:hover {
+    background: var(--blue2);
+    border-color: var(--blue2);
+    transform: translateY(-1px);
+}
+
+.pub-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.25rem;
+}
+
 /* ABOUT */
 .about-wrap {
     display: grid;
