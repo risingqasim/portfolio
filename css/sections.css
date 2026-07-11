@@ -135,7 +135,7 @@
 }
 
 /* HERO */
-#hero {
+#home {
     min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr 420px;
@@ -146,7 +146,7 @@
     margin: 0 auto;
 }
 
-.hero-pip {
+#home .hero-pip {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -176,7 +176,7 @@
     50% { opacity: 0.3; }
 }
 
-.hero-name {
+#home .hero-name {
     font-size: clamp(3rem, 6.5vw, 5.8rem);
     font-weight: 900;
     line-height: 0.9;
@@ -185,11 +185,11 @@
     margin-bottom: 0.5rem;
 }
 
-.hero-name .bl {
+#home .hero-name .bl {
     color: var(--blue);
 }
 
-.hero-role {
+#home .hero-role {
     font-size: clamp(1.2rem, 2.2vw, 1.8rem);
     font-weight: 400;
     color: var(--muted);
@@ -197,7 +197,7 @@
     margin-bottom: 2rem;
 }
 
-.hero-desc {
+#home .hero-desc {
     font-size: 0.97rem;
     line-height: 1.8;
     color: var(--ink2);
@@ -205,35 +205,35 @@
     margin-bottom: 2.5rem;
 }
 
-.hero-btns {
+#home .hero-btns {
     display: flex;
     gap: 0.8rem;
     flex-wrap: wrap;
     margin-bottom: 3.5rem;
 }
 
-.hero-stats {
+#home .hero-stats {
     display: flex;
     gap: 2.5rem;
     padding-top: 2.5rem;
     border-top: 1px solid var(--bd);
 }
 
-.sn {
+#home .sn {
     font-size: 1.9rem;
     font-weight: 900;
     letter-spacing: -0.03em;
     color: var(--ink);
 }
 
-.sl {
+#home .sl {
     font-size: 0.7rem;
     color: var(--muted);
     font-weight: 500;
     margin-top: 2px;
 }
 
-.hero-photo {
+#home .hero-photo {
     position: relative;
 }
 
@@ -1406,12 +1406,12 @@ html[data-theme="dark"] .about-vis {
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-    #hero {
+    #home {
         grid-template-columns: 1fr;
         padding-top: 7rem;
     }
 
-    .hero-photo { display: none; }
+    #home .hero-photo { display: none; }
     .svc-grid { grid-template-columns: 1fr 1fr; }
     .demos-grid { grid-template-columns: 1fr; }
     .about-wrap { grid-template-columns: 1fr; gap: 3rem; }
@@ -1426,7 +1426,7 @@ html[data-theme="dark"] .about-vis {
     .navlinks { display: none; }
     .site-hamburger { display: flex; }
     .wrap { padding: 0 1.5rem; }
-    #hero { padding: 7rem 1.5rem 3rem; }
+    #home { padding: 7rem 1.5rem 3rem; }
     .svc-grid { grid-template-columns: 1fr; }
     .site-footer {
         flex-direction: column;
