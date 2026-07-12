@@ -1481,6 +1481,46 @@ html[data-theme="dark"] .about-vis {
 .ce-l { font-size: 0.68rem; color: rgba(255, 255, 255, 0.33); margin-bottom: 2px; }
 .ce-v { font-size: 0.88rem; font-weight: 700; color: var(--cyan); }
 
+.ct-cv {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.2rem 1.5rem;
+    background: rgba(24, 71, 240, 0.12);
+    border: 1px solid rgba(24, 71, 240, 0.35);
+    border-radius: 14px;
+    transition: all 0.3s var(--ease);
+    margin-bottom: 1.8rem;
+    text-decoration: none;
+}
+
+.ct-cv:hover {
+    background: rgba(24, 71, 240, 0.22);
+    border-color: var(--blue);
+    transform: translateY(-2px);
+}
+
+.ct-cv .ce-v { color: #fff; }
+
+.ct-cv-arr {
+    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s var(--ease);
+}
+
+.ct-cv:hover .ct-cv-arr {
+    background: var(--blue);
+    border-color: var(--blue);
+}
+
 .slinks { display: grid; gap: 0.7rem; }
 
 .slk {
