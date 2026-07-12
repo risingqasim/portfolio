@@ -175,6 +175,7 @@ document.querySelectorAll('.svc').forEach((card) => {
 // Optional fields per project:
 //   backendRepo, frontendRepo (URL strings)
 //   backendPrivate, frontendPrivate (true/false)
+//   backendLabel, frontendLabel (custom button text)
 // Private repos show a badge instead of a GitHub link.
 // ============================================
 const teamProjects = [
@@ -198,6 +199,18 @@ const teamProjects = [
         backendPrivate: false,
         frontendPrivate: false,
     },
+    {
+        title: 'Temperature Management System — Abbott Laboratories 🌡️',
+        description:
+            'Team-built temperature monitoring system for Abbott Laboratories — PLC and Windows Services for industrial control, with a WinForms app for real-time temperature tracking.',
+        tags: ['PLC', 'Windows Services', 'WinForms', 'C#', 'Team'],
+        backendRepo: 'https://github.com/risingqasim/Abboot_',
+        frontendRepo: 'https://github.com/risingqasim/W_sens',
+        backendLabel: 'Windows Services & PLC',
+        frontendLabel: 'WinForms App',
+        backendPrivate: false,
+        frontendPrivate: false,
+    },
 ];
 
 function buildRepoAction(label, url, isPrivate) {
@@ -207,7 +220,7 @@ function buildRepoAction(label, url, isPrivate) {
         return `<span class="prepo-private" title="Code available on request">${label}: Private Repository</span>`;
     }
 
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="prepo-btn"><span>${label} Repository</span><span class="prepo-arr">↗</span></a>`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="prepo-btn"><span>${label}</span><span class="prepo-arr">↗</span></a>`;
 }
 
 function renderTeamProjects() {
@@ -221,16 +234,19 @@ function renderTeamProjects() {
                 .map((tag) => `<span class="ptag">${tag}</span>`)
                 .join('');
 
+            const backendLabel = project.backendLabel || 'Backend Repository';
+            const frontendLabel = project.frontendLabel || 'Frontend Repository';
+
             const repos = [
-                buildRepoAction('Backend', project.backendRepo, project.backendPrivate),
-                buildRepoAction('Frontend', project.frontendRepo, project.frontendPrivate),
+                buildRepoAction(backendLabel, project.backendRepo, project.backendPrivate),
+                buildRepoAction(frontendLabel, project.frontendRepo, project.frontendPrivate),
             ]
                 .filter(Boolean)
                 .join('');
 
             const legacyRepo =
                 !project.backendRepo && !project.frontendRepo && project.github
-                    ? buildRepoAction('GitHub', project.github, project.private)
+                    ? buildRepoAction('GitHub Repository', project.github, project.private)
                     : '';
 
             const actions = repos || legacyRepo;
