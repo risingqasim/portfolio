@@ -29,12 +29,12 @@ html {
     justify-content: space-between;
     padding: 0 1.75rem;
     box-sizing: border-box;
-    background: color-mix(in srgb, var(--bg) 72%, transparent);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid var(--bd);
+    background: color-mix(in srgb, var(--bg) 35%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid color-mix(in srgb, var(--bd) 70%, transparent);
     border-radius: 999px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     transition:
         box-shadow 0.35s var(--ease),
         background-color 0.35s var(--ease),
@@ -43,19 +43,19 @@ html {
 }
 
 html[data-theme="dark"] .site-nav {
-    background: color-mix(in srgb, var(--bg) 62%, transparent);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+    background: color-mix(in srgb, var(--bg) 28%, transparent);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
 }
 
 .site-nav.sc {
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    border-color: var(--bd2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: color-mix(in srgb, var(--bg) 48%, transparent);
+    border-color: var(--bd);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
 html[data-theme="dark"] .site-nav.sc {
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.45);
+    background: color-mix(in srgb, var(--bg) 42%, transparent);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.32);
 }
 
 .site-logo {
