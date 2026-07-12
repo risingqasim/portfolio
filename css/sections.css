@@ -1484,6 +1484,8 @@ html[data-theme="dark"] .mobmenu {
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--ink2);
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .about-vis {
@@ -1746,7 +1748,7 @@ html[data-theme="dark"] .about-vis {
     #home .hero-photo { display: none; }
     .svc-grid { grid-template-columns: 1fr 1fr; }
     .demos-grid { grid-template-columns: 1fr; }
-    .about-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    .about-wrap { grid-template-columns: 1fr; gap: 2.5rem; align-items: start; }
     .ct-wrap { grid-template-columns: 1fr; gap: 3rem; }
     .sk-grid { grid-template-columns: 1fr; }
     .tl-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -1796,5 +1798,91 @@ html[data-theme="dark"] .about-vis {
     .prepo-private {
         font-size: 0.62rem;
         padding: 0.4rem 0.75rem;
+    }
+
+    /* About — mobile */
+    #about.sec {
+        padding: 4.5rem 0;
+    }
+
+    .about-wrap {
+        gap: 1.75rem;
+    }
+
+    .about-h {
+        font-size: clamp(1.55rem, 7.2vw, 2rem);
+        line-height: 1.15;
+        letter-spacing: -0.035em;
+        margin-bottom: 1rem;
+    }
+
+    .about-p {
+        font-size: 0.86rem;
+        line-height: 1.75;
+        margin-bottom: 0.75rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        margin-top: 1.35rem;
+    }
+
+    .ig {
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+    }
+
+    .ig-l {
+        font-size: 0.58rem;
+    }
+
+    .ig-v {
+        font-size: 0.84rem;
+    }
+
+    .about-vis {
+        padding: 1.4rem 1.25rem;
+        border-radius: 18px;
+    }
+
+    .av-q {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin-bottom: 1.1rem;
+        padding-left: 0.9rem;
+    }
+
+    .av-list {
+        gap: 0.55rem;
+    }
+
+    .av-list li {
+        font-size: 0.78rem;
+        align-items: flex-start;
+        line-height: 1.45;
+    }
+
+    .av-list li::before {
+        margin-top: 0.1rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .wrap { padding: 0 1.15rem; }
+
+    .about-h {
+        font-size: 1.45rem;
+    }
+
+    .about-h br {
+        display: none;
+    }
+
+    .about-vis {
+        padding: 1.2rem 1rem;
     }
 }
