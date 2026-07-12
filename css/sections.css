@@ -932,6 +932,29 @@ html[data-theme="dark"] .mobmenu {
     box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
+.demo-prod {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(24, 71, 240, 0.92);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    box-shadow: 0 4px 14px rgba(24, 71, 240, 0.35);
+}
+
+.demo--static {
+    cursor: default;
+}
+
+.demo--static:hover {
+    transform: translateY(-4px);
+}
+
 .pos-screen {
     height: 270px;
     background: #0f1219;
