@@ -711,6 +711,90 @@
     transform: rotate(-45deg);
 }
 
+/* Dual-repo project rows (team projects) — same prow feel as personal */
+.prow--multi {
+    align-items: center;
+}
+
+.prow-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+    min-width: 168px;
+}
+
+.prepos {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+}
+
+.prepo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--bd2);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s var(--ease);
+    white-space: nowrap;
+}
+
+.prepo-btn .prepo-arr {
+    font-size: 0.85rem;
+    transform: rotate(-45deg);
+    transition: transform 0.3s var(--ease);
+    line-height: 1;
+}
+
+.prow--multi:hover .prepo-btn,
+.prepo-btn:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+}
+
+.prow--multi:hover .prepo-btn .prepo-arr,
+.prepo-btn:hover .prepo-arr {
+    transform: rotate(0);
+}
+
+.prepo-private {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    background: var(--bg2);
+    border: 1.5px dashed var(--bd2);
+    border-radius: 12px;
+    cursor: default;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.prepo-private::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    opacity: 0.55;
+    flex-shrink: 0;
+}
+
 /* DEMOS */
 .demos-grid {
     display: grid;
@@ -1514,4 +1598,24 @@ html[data-theme="dark"] .about-vis {
         padding: 1.5rem;
     }
     .pub-card { padding: 1.4rem 1.5rem; }
+
+    .prow,
+    .prow--multi {
+        grid-template-columns: 36px 1fr;
+        gap: 1rem;
+        padding: 1.4rem 0;
+    }
+
+    .prow .parr,
+    .prow-actions { display: none; }
+
+    .prepos--mobile { display: flex; }
+
+    .ptitle { font-size: 1.05rem; }
+
+    .prepo-btn,
+    .prepo-private {
+        font-size: 0.62rem;
+        padding: 0.4rem 0.75rem;
+    }
 }

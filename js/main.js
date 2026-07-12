@@ -169,3 +169,76 @@ document.querySelectorAll('.svc').forEach((card) => {
         }
     });
 });
+
+// ============================================
+// Team Projects
+// Optional fields per project:
+//   backendRepo, frontendRepo (URL strings)
+//   backendPrivate, frontendPrivate (true/false)
+// Private repos show a badge instead of a GitHub link.
+// ============================================
+const teamProjects = [
+    {
+        title: 'Online Banking App for Online Clients 🏦',
+        description:
+            'Team-built online banking platform for digital clients — Angular frontend with a separate ASP.NET Web API backend for secure banking workflows.',
+        tags: ['Angular', 'ASP.NET Web API', 'C#', 'Team'],
+        backendRepo: 'https://github.com/risingqasim/cxp_api',
+        frontendRepo: 'https://github.com/risingqasim/alpha_bank_client',
+        backendPrivate: false,
+        frontendPrivate: false,
+    },
+];
+
+function buildRepoAction(label, url, isPrivate) {
+    if (!url) return '';
+
+    if (isPrivate) {
+        return `<span class="prepo-private" title="Code available on request">${label}: Private Repository</span>`;
+    }
+
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="prepo-btn"><span>${label} Repository</span><span class="prepo-arr">↗</span></a>`;
+}
+
+function renderTeamProjects() {
+    const list = document.getElementById('teamProjectsList');
+    if (!list || !teamProjects.length) return;
+
+    list.innerHTML = teamProjects
+        .map((project, index) => {
+            const num = String(index + 1).padStart(2, '0');
+            const tags = (project.tags || [])
+                .map((tag) => `<span class="ptag">${tag}</span>`)
+                .join('');
+
+            const repos = [
+                buildRepoAction('Backend', project.backendRepo, project.backendPrivate),
+                buildRepoAction('Frontend', project.frontendRepo, project.frontendPrivate),
+            ]
+                .filter(Boolean)
+                .join('');
+
+            const legacyRepo =
+                !project.backendRepo && !project.frontendRepo && project.github
+                    ? buildRepoAction('GitHub', project.github, project.private)
+                    : '';
+
+            const actions = repos || legacyRepo;
+
+            return `
+                <div class="prow prow--multi">
+                    <div class="pnum">${num}</div>
+                    <div>
+                        <div class="ptitle">${project.title}</div>
+                        <div class="pdesc">${project.description}</div>
+                        ${tags ? `<div class="ptags2">${tags}</div>` : ''}
+                        ${actions ? `<div class="prepos prepos--mobile">${actions}</div>` : ''}
+                    </div>
+                    ${actions ? `<div class="prow-actions">${actions}</div>` : '<div class="parr">↗</div>'}
+                </div>
+            `;
+        })
+        .join('');
+}
+
+renderTeamProjects();
