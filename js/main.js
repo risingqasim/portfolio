@@ -211,6 +211,16 @@ const teamProjects = [
         backendPrivate: false,
         frontendPrivate: false,
     },
+    {
+        title: 'MedBook 📚',
+        description:
+            'Team-built medical booking platform — Angular frontend with a separate ASP.NET Web API backend for appointments and healthcare workflows.',
+        tags: ['Angular', 'ASP.NET Web API', 'C#', 'Team'],
+        backendRepo: 'https://github.com/risingqasim/medbook_api',
+        frontendRepo: 'https://github.com/risingqasim/medbook_app',
+        backendPrivate: false,
+        frontendPrivate: false,
+    },
 ];
 
 function buildRepoAction(label, url, isPrivate) {
