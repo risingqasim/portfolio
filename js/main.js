@@ -188,6 +188,16 @@ const teamProjects = [
         backendPrivate: false,
         frontendPrivate: false,
     },
+    {
+        title: 'J Ticket — Ticket Creating System 🎫',
+        description:
+            'Team-built ticketing platform for creating and managing support tickets — React frontend with a separate ASP.NET Web API backend.',
+        tags: ['React', 'ASP.NET Web API', 'C#', 'Team'],
+        backendRepo: 'https://github.com/risingqasim/Jtickets_API',
+        frontendRepo: 'https://github.com/risingqasim/Jtickets_Client',
+        backendPrivate: false,
+        frontendPrivate: false,
+    },
 ];
 
 function buildRepoAction(label, url, isPrivate) {
