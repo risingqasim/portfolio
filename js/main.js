@@ -194,8 +194,8 @@ const teamProjects = [
         tags: ['Angular', 'ASP.NET Web API', 'C#', 'Team'],
         backendRepo: 'https://github.com/risingqasim/cxp_api',
         frontendRepo: 'https://github.com/risingqasim/alpha_bank_client',
-        backendPrivate: false,
-        frontendPrivate: false,
+        backendPrivate: true,
+        frontendPrivate: true,
     },
     {
         title: 'J Ticket — Ticket Creating System 🎫',
@@ -204,8 +204,8 @@ const teamProjects = [
         tags: ['React', 'ASP.NET Web API', 'C#', 'Team'],
         backendRepo: 'https://github.com/risingqasim/Jtickets_API',
         frontendRepo: 'https://github.com/risingqasim/Jtickets_Client',
-        backendPrivate: false,
-        frontendPrivate: false,
+        backendPrivate: true,
+        frontendPrivate: true,
     },
     {
         title: 'Temperature Management System — Abbott Laboratories 🌡️',
@@ -216,8 +216,8 @@ const teamProjects = [
         frontendRepo: 'https://github.com/risingqasim/W_sens',
         backendLabel: 'Windows Services & PLC',
         frontendLabel: 'WinForms App',
-        backendPrivate: false,
-        frontendPrivate: false,
+        backendPrivate: true,
+        frontendPrivate: true,
     },
     {
         title: 'MedBook 📚',
@@ -226,17 +226,27 @@ const teamProjects = [
         tags: ['Angular', 'ASP.NET Web API', 'C#', 'Team'],
         backendRepo: 'https://github.com/risingqasim/medbook_api',
         frontendRepo: 'https://github.com/risingqasim/medbook_app',
-        backendPrivate: false,
-        frontendPrivate: false,
+        backendPrivate: true,
+        frontendPrivate: true,
     },
 ];
 
-function buildRepoAction(label, url, isPrivate) {
-    if (!url) return '';
-
+function buildRepoAction(label, url, isPrivate, projectTitle) {
     if (isPrivate) {
-        return `<span class="prepo-private" title="Code available on request">${label}: Private Repository</span>`;
+        const safeTitle = (projectTitle || 'Team Project').replace(/"/g, '&quot;');
+        const safeLabel = (label || 'Repository').replace(/"/g, '&quot;');
+        return `
+            <button type="button" class="prepo-btn prepo-btn--private js-nda-trigger" data-project="${safeTitle}" data-repo="${safeLabel}" aria-label="View private repository details for ${safeTitle}">
+                <span class="prepo-label-wrap">
+                    <span>${label}</span>
+                    <span class="prepo-nda-badge">Private / NDA</span>
+                </span>
+                <span class="prepo-lock" aria-hidden="true">🔒</span>
+            </button>
+        `;
     }
+
+    if (!url) return '';
 
     return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="prepo-btn"><span>${label}</span><span class="prepo-arr">↗</span></a>`;
 }
@@ -257,16 +267,16 @@ function renderTeamProjects() {
             const liveLabel = project.liveLabel || 'Live Demo';
 
             const repos = [
-                project.liveUrl ? buildRepoAction(liveLabel, project.liveUrl, false) : '',
-                buildRepoAction(backendLabel, project.backendRepo, project.backendPrivate),
-                buildRepoAction(frontendLabel, project.frontendRepo, project.frontendPrivate),
+                project.liveUrl ? buildRepoAction(liveLabel, project.liveUrl, false, project.title) : '',
+                buildRepoAction(backendLabel, project.backendRepo, project.backendPrivate, project.title),
+                buildRepoAction(frontendLabel, project.frontendRepo, project.frontendPrivate, project.title),
             ]
                 .filter(Boolean)
                 .join('');
 
             const legacyRepo =
                 !project.backendRepo && !project.frontendRepo && !project.liveUrl && project.github
-                    ? buildRepoAction('GitHub Repository', project.github, project.private)
+                    ? buildRepoAction('GitHub Repository', project.github, project.private, project.title)
                     : '';
 
             const actions = repos || legacyRepo;
@@ -291,3 +301,66 @@ function renderTeamProjects() {
 }
 
 renderTeamProjects();
+
+// ============================================
+// NDA Code Walkthrough Modal Logic
+// ============================================
+function initNDAModal() {
+    const modal = document.getElementById('ndaModal');
+    if (!modal) return;
+
+    const backdrop = document.getElementById('ndaModalBackdrop');
+    const closeBtn = document.getElementById('ndaModalClose');
+    const cancelBtn = document.getElementById('ndaCancelBtn');
+    const projectEl = document.getElementById('ndaModalProject');
+    const walkthroughBtn = document.getElementById('ndaWalkthroughBtn');
+
+    function openModal(projectTitle, repoName) {
+        const cleanProject = projectTitle || 'Team Project';
+        const cleanRepo = repoName || 'Private Repository';
+
+        if (projectEl) {
+            projectEl.textContent = `${cleanProject} · ${cleanRepo}`;
+        }
+
+        if (walkthroughBtn) {
+            const subject = encodeURIComponent(`Code Walkthrough Request: ${cleanProject}`);
+            const body = encodeURIComponent(
+                `Hi Muhammad Qasim,\n\nI would like to request an architecture discussion and code walkthrough for your project: "${cleanProject}" (${cleanRepo}).\n\nLooking forward to speaking with you.\n\nBest regards,`
+            );
+            walkthroughBtn.href = `mailto:qasimmughal7244@gmail.com?subject=${subject}&body=${body}`;
+        }
+
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.js-nda-trigger');
+        if (trigger) {
+            e.preventDefault();
+            const project = trigger.getAttribute('data-project');
+            const repo = trigger.getAttribute('data-repo');
+            openModal(project, repo);
+        }
+    });
+
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+            closeModal();
+        }
+    });
+}
+
+initNDAModal();

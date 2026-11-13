@@ -479,6 +479,28 @@
         <a href="#home" class="ft">↑ Back to top</a>
     </footer>
 
+    <!-- NDA Code Walkthrough Modal -->
+    <div class="nda-modal" id="ndaModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ndaModalTitle" aria-describedby="ndaModalDesc">
+        <div class="nda-modal-backdrop" id="ndaModalBackdrop"></div>
+        <div class="nda-modal-card">
+            <button type="button" class="nda-modal-close" id="ndaModalClose" aria-label="Close dialog">✕</button>
+            <div class="nda-modal-ico" aria-hidden="true">🔒</div>
+            <div class="nda-modal-badge" id="ndaModalBadge">NDA Protected</div>
+            <h3 class="nda-modal-title" id="ndaModalTitle">Private Team Repository (NDA Protected)</h3>
+            <div class="nda-modal-project" id="ndaModalProject">Team Project · Private Repository</div>
+            <p class="nda-modal-desc" id="ndaModalDesc">
+                This code was built as part of a secure team/client project and is restricted due to confidentiality agreements. I would be glad to share the architecture, database design, or conduct a code walkthrough during a discussion.
+            </p>
+            <div class="nda-modal-actions">
+                <a href="mailto:qasimmughal7244@gmail.com" class="btn btn-dark nda-walkthrough-btn" id="ndaWalkthroughBtn">
+                    <span>Request Code Walkthrough</span>
+                    <span aria-hidden="true">✉️</span>
+                </a>
+                <button type="button" class="btn btn-out nda-cancel-btn" id="ndaCancelBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script src="./js/main.js"></script>
 </body>
 </html>
