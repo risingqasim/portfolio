@@ -180,6 +180,14 @@ document.querySelectorAll('.svc').forEach((card) => {
 // ============================================
 const teamProjects = [
     {
+        title: 'Multi-Tenant & Multi-Branch POS System 🏪',
+        description:
+            'Team-built cloud POS and restaurant management platform featuring multi-tenancy, multi-branch operations, real-time online order pipeline, live table occupancy, sales, expenses, and branch administration.',
+        tags: ['ASP.NET Core', 'C#', 'SQL Server', 'Multi-Tenant', 'Team'],
+        liveUrl: 'https://aljannatapp.com/#/online-order',
+        liveLabel: 'Live Demo',
+    },
+    {
         title: 'Online Banking App for Online Clients 🏦',
         description:
             'Team-built online banking platform for digital clients — Angular frontend with a separate ASP.NET Web API backend for secure banking workflows.',
@@ -246,8 +254,10 @@ function renderTeamProjects() {
 
             const backendLabel = project.backendLabel || 'Backend Repository';
             const frontendLabel = project.frontendLabel || 'Frontend Repository';
+            const liveLabel = project.liveLabel || 'Live Demo';
 
             const repos = [
+                project.liveUrl ? buildRepoAction(liveLabel, project.liveUrl, false) : '',
                 buildRepoAction(backendLabel, project.backendRepo, project.backendPrivate),
                 buildRepoAction(frontendLabel, project.frontendRepo, project.frontendPrivate),
             ]
@@ -255,17 +265,20 @@ function renderTeamProjects() {
                 .join('');
 
             const legacyRepo =
-                !project.backendRepo && !project.frontendRepo && project.github
+                !project.backendRepo && !project.frontendRepo && !project.liveUrl && project.github
                     ? buildRepoAction('GitHub Repository', project.github, project.private)
                     : '';
 
             const actions = repos || legacyRepo;
+            const titleHtml = project.liveUrl
+                ? `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none">${project.title}</a>`
+                : project.title;
 
             return `
                 <div class="prow prow--multi">
                     <div class="pnum">${num}</div>
                     <div>
-                        <div class="ptitle">${project.title}</div>
+                        <div class="ptitle">${titleHtml}</div>
                         <div class="pdesc">${project.description}</div>
                         ${tags ? `<div class="ptags2">${tags}</div>` : ''}
                         ${actions ? `<div class="prepos prepos--mobile">${actions}</div>` : ''}
